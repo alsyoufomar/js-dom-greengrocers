@@ -146,11 +146,13 @@ function render () {
     li.append(title)
     li.append(buttonA)
     ul.append(li)
+
+
+
   }
   const container = document.querySelector('.cart--item-list-container')
   container.append(ul)
-
-
+  checkout()
 }
 
 function checkQuantity (item) {
@@ -166,7 +168,17 @@ function decremental (item) {
     state.cart.splice(state.cart.indexOf(n), 1)
   }
 }
+
 function incremental (item) {
   const n = state.cart.find(x => x.id === item)
   n.quantity++
+}
+
+function checkout () {
+  let sum = 0
+  for (let n of state.cart) {
+    sum += n.price * n.quantity
+  }
+  const total = document.querySelector(".total-number")
+  total.innerText = `£${sum.toFixed(2)}`
 }
