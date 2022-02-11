@@ -17,24 +17,37 @@
       </ul>
     </header>
 
-    <main id="cart">
-      <h2>Your Cart</h2>
+    <main>
+      <select name="categories" id="types">
+        <option value="">Filters</option>
+        <option value="fruits">fruits</option>
+        <option value="vegetables">vegetables</option>
+      </select>
+      <div id="cart">
+        <h2>Your Cart</h2>
 
-      <div class="cart--item-list-container">
-        <ul class="item-list cart--item-list">
-          <!-- Take a look at cart-item.html -->
-        </ul>
-      </div>
-
-      <div class="total-section">
-        <div>
-          <h3>Total</h3>
+        <div class="cart--item-list-container">
+          <ul class="item-list cart--item-list">
+            <!-- Take a look at cart-item.html -->
+          </ul>
         </div>
 
-        <div>
-          <span class="total-number">£0.00</span>
+        <div class="total-section">
+          <div>
+            <h3>Total</h3>
+          </div>
+
+          <div>
+            <span class="total-number">£0.00</span>
+          </div>
         </div>
       </div>
+      <select name="sort" id="sort">
+        <option value="">Sort By</option>
+        <option value="alphabetically">alphabetically</option>
+        <option value="price(Lowest-First)">price(Lowest-First)</option>
+        <option value="price(Highest-First)">price(Highest-First)</option>
+      </select>
     </main>
     <div>
       Icons made by

@@ -4,61 +4,71 @@ const state = {
       id: "001-beetroot",
       name: "beetroot",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: false
     },
     {
       id: "002-carrot",
       name: "carrot",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: false
     },
     {
       id: "003-apple",
       name: "apple",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: true
     },
     {
       id: "004-apricot",
       name: "apricot",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: false
     },
     {
       id: "005-avocado",
       name: "avocado",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: true
     },
     {
       id: "006-bananas",
       name: "bananas",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: true
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: false
     },
     {
       id: "008-berry",
       name: "berry",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: true
     },
     {
       id: "009-blueberry",
       name: "blueberry",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: true
     },
     {
       id: "010-eggplant",
       name: "eggplant",
       price: 0.35,
-      quantity: 1
+      quantity: 1,
+      isFruite: false
     }
   ],
   cart: []
@@ -85,13 +95,7 @@ function store (thing) {
   button.setAttribute('id', thing.id)
   li.append(button)
   button.addEventListener('click', (e) => {
-    console.log(e.target.id)
-    if (checkQuantity(e.target.id)) {
-      thing.quantity++
-    }
-    else {
-      state.cart.push(thing)
-    }
+    checkQuantity(e.target.id) ? thing.quantity++ : state.cart.push(thing)
     render()
   })
 }
@@ -146,9 +150,6 @@ function render () {
     li.append(title)
     li.append(buttonA)
     ul.append(li)
-
-
-
   }
   const container = document.querySelector('.cart--item-list-container')
   container.append(ul)
@@ -161,12 +162,7 @@ function checkQuantity (item) {
 
 function decremental (item) {
   const n = state.cart.find(x => x.id === item)
-  if (n.quantity > 1) {
-    n.quantity--
-  }
-  else {
-    state.cart.splice(state.cart.indexOf(n), 1)
-  }
+  n.quantity > 1 ? n.quantity-- : state.cart.splice(state.cart.indexOf(n), 1)
 }
 
 function incremental (item) {
@@ -176,9 +172,11 @@ function incremental (item) {
 
 function checkout () {
   let sum = 0
+
   for (let n of state.cart) {
     sum += n.price * n.quantity
   }
   const total = document.querySelector(".total-number")
   total.innerText = `£${sum.toFixed(2)}`
 }
+
