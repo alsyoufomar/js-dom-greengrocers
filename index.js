@@ -3,70 +3,70 @@ const state = {
     {
       id: "001-beetroot",
       name: "beetroot",
-      price: 0.35,
+      price: 1.45,
       quantity: 1,
       isFruite: false
     },
     {
       id: "002-carrot",
       name: "carrot",
-      price: 0.35,
+      price: 5.55,
       quantity: 1,
       isFruite: false
     },
     {
       id: "003-apple",
       name: "apple",
-      price: 0.35,
+      price: 0.95,
       quantity: 1,
       isFruite: true
     },
     {
       id: "004-apricot",
       name: "apricot",
-      price: 0.35,
+      price: 0.75,
       quantity: 1,
       isFruite: false
     },
     {
       id: "005-avocado",
       name: "avocado",
-      price: 0.35,
+      price: 0.85,
       quantity: 1,
       isFruite: true
     },
     {
       id: "006-bananas",
       name: "bananas",
-      price: 0.35,
+      price: 0.99,
       quantity: 1,
       isFruite: true
     },
     {
       id: "007-bell-pepper",
       name: "bell pepper",
-      price: 0.35,
+      price: 1.35,
       quantity: 1,
       isFruite: false
     },
     {
       id: "008-berry",
       name: "berry",
-      price: 0.35,
+      price: 2.35,
       quantity: 1,
       isFruite: true
     },
     {
       id: "009-blueberry",
       name: "blueberry",
-      price: 0.35,
+      price: 4.35,
       quantity: 1,
       isFruite: true
     },
     {
       id: "010-eggplant",
       name: "eggplant",
-      price: 0.35,
+      price: 4.35,
       quantity: 1,
       isFruite: false
     }
@@ -99,10 +99,7 @@ function store (thing) {
     render()
   })
 }
-
-for (let item of state.items) {
-  store(item)
-}
+state.items.forEach(item => store(item))
 
 function render () {
   let ul = document.querySelector('.cart--item-list')
@@ -178,5 +175,89 @@ function checkout () {
   }
   const total = document.querySelector(".total-number")
   total.innerText = `£${sum.toFixed(2)}`
+}
+
+const filter = document.querySelector("#types")
+filter.addEventListener("change", (e) => {
+  applyFilter(e.target.value)
+})
+
+const topUl = document.querySelector('.store--item-list')
+
+function applyFilter (value) {
+  while (topUl.hasChildNodes()) {
+    topUl.removeChild(topUl.firstChild)
+  } if (value === "fruits") {
+    const arr = state.items.filter(item => item.isFruite === true)
+    arr.forEach(item => store(item))
+  } else if (value === "vegetables") {
+    const arr = state.items.filter(item => item.isFruite === false)
+    arr.forEach(item => store(item))
+  } else state.items.forEach(item => store(item))
+}
+
+const sortItems = document.querySelector("#sort")
+sortItems.addEventListener('change', (e) => {
+  sortBy(e.target.value)
+})
+
+function sortBy (value) {
+
+  while (topUl.hasChildNodes()) {
+    topUl.removeChild(topUl.firstChild)
+  }
+  if (value === "alphabetically") {
+    const arr = state.items.map(item => item.name).sort().map(item => finder(item))
+    arr.forEach(item => store(item))
+  }
+  else if (value === "price(Lowest-First)") {
+    const arr = state.items.map(item => item.price)
+    const arr2 = mergeSort(arr).map(item => priceFinder(item))
+    arr2.forEach(item => store(item))
+  }
+  else if (value === "price(Highest-First)") {
+    const arr = state.items.map(item => item.price)
+    const arr2 = mergeSort(arr).reverse().map(item => priceFinder(item))
+    arr2.forEach(item => store(item))
+  }
+  else state.items.forEach(item => store(item))
+}
+
+function finder (name) {
+  return state.items.find(item => item.name === name)
+}
+function priceFinder (price) {
+  return state.items.find(item => item.price === price)
+}
+
+// I know that the .sort() method works perfectly
+// however I just wanted to practice algorethms.
+
+function mergeSort (array) {
+  if (array.length < 2) return array
+
+  const midIndex = Math.floor(array.length / 2)
+  const leftArr = array.slice(0, midIndex)
+  const rightArr = array.slice(midIndex, array.length)
+
+  return merge(mergeSort(leftArr), mergeSort(rightArr))
+}
+
+function merge (leftArr, rightArr) {
+  let resultArr = []
+  let leftIndex = 0
+  let rightIndex = 0
+
+  while (leftIndex < leftArr.length && rightIndex < rightArr.length) {
+    if (leftArr[leftIndex] < rightArr[rightIndex]) {
+      resultArr.push(leftArr[leftIndex])
+      leftIndex += 1
+    }
+    else {
+      resultArr.push(rightArr[rightIndex])
+      rightIndex += 1
+    }
+  }
+  return resultArr.concat(leftArr.slice(leftIndex)).concat(rightArr.slice(rightIndex))
 }
 
